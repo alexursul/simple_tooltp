@@ -23,19 +23,19 @@ class _BallonPositioner extends StatefulWidget {
   final LayerLink link;
 
   const _BallonPositioner({
-    Key key,
-    @required this.tooltipDirection,
-    @required this.arrowTipDistance,
-    @required this.arrowLength,
-    // @required this.arrowBaseWidth,
-    @required this.child,
-    @required this.maxWidth,
-    @required this.maxHeight,
-    @required this.minWidth,
-    @required this.minHeight,
-    @required this.outsidePadding,
-    @required this.link,
-    @required this.context,
+    Key? key,
+    required this.tooltipDirection,
+    required this.arrowTipDistance,
+    required this.arrowLength,
+    // required this.arrowBaseWidth,
+    required this.child,
+    required this.maxWidth,
+    required this.maxHeight,
+    required this.minWidth,
+    required this.minHeight,
+    required this.outsidePadding,
+    required this.link,
+    required this.context,
   }) : super(key: key);
 
   @override
@@ -44,9 +44,9 @@ class _BallonPositioner extends StatefulWidget {
 
 class __BallonPositionerState extends State<_BallonPositioner> {
   GlobalKey _ballonKey = GlobalKey();
-  double _ballonWidth;
-  double _ballonHeight;
-  Size _ballonSize;
+  double? _ballonWidth;
+  double? _ballonHeight;
+  Size? _ballonSize;
 
   @override
   void initState() {
@@ -67,21 +67,21 @@ class __BallonPositionerState extends State<_BallonPositioner> {
     if (widget.context == null) {
       return Container();
     }
-    RenderBox renderBox = widget.context.findRenderObject();
-    if (!renderBox.attached) {
+    RenderBox? renderBox = widget.context.findRenderObject() as RenderBox?;
+    if (renderBox == null || !renderBox.attached) {
       return Container();
     }
     final cOverlay = Overlay.of(widget.context);
-    if (!cOverlay.mounted) {
+    if (cOverlay == null || !cOverlay.mounted) {
       return Container();
     }
-    final RenderBox overlay = cOverlay.context.findRenderObject();
+    final RenderBox? overlay = cOverlay.context.findRenderObject() as RenderBox?;
 
-    if (renderBox == null || overlay == null || renderBox.hasSize == false) {
+    if (overlay == null || renderBox.hasSize == false) {
       return Container();
     }
 
-    Offset tipTarget;
+    late Offset tipTarget;
 
     final Offset zeroOffset = Offset.zero;
     try {
@@ -134,11 +134,11 @@ class __BallonPositionerState extends State<_BallonPositioner> {
       ),
     );
 
-    WidgetsBinding.instance.addPostFrameCallback((_) {
+    WidgetsBinding.instance?.addPostFrameCallback((_) {
       final ballonContext = _ballonKey.currentContext;
       if (ballonContext != null) {
         // final bRenderO = ballonContext.findRenderObject();
-        final ballonSize = ballonContext.size;
+        final ballonSize = ballonContext.size ?? Size(120, 20);
         _ballonWidth = ballonSize.width;
         _ballonHeight = ballonSize.height;
         final wasNull = _ballonSize == null;
@@ -154,7 +154,7 @@ class __BallonPositionerState extends State<_BallonPositioner> {
     // double xPosition;
     // double yPosition;
 
-    final offset = getPositionForChild(_ballonSize, overlay, globalTipTarget);
+    final offset = getPositionForChild(_ballonSize ?? Size(120, 20), overlay, globalTipTarget);
 
     return Stack(
       children: <Widget>[
@@ -262,15 +262,15 @@ class _PopupBallonLayoutDelegate extends SingleChildLayoutDelegate {
   final double outsidePadding;
 
   _PopupBallonLayoutDelegate({
-    @required this.maxWidth,
-    @required this.maxHeight,
-    @required this.minWidth,
-    @required this.minHeight,
-    @required this.tooltipDirection,
-    @required this.arrowLength,
-    @required this.arrowTipDistance,
-    @required this.tipTarget,
-    @required this.outsidePadding,
+    required this.maxWidth,
+    required this.maxHeight,
+    required this.minWidth,
+    required this.minHeight,
+    required this.tooltipDirection,
+    required this.arrowLength,
+    required this.arrowTipDistance,
+    required this.tipTarget,
+    required this.outsidePadding,
   });
 
   @override
